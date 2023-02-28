@@ -14,7 +14,7 @@ function App() {
   const handleSubmit = (event) => {
     event.preventDefault();
     // ทำการส่งข้อมูล email และ password ไปยังเซิร์ฟเวอร์
-    console.log(`Email: ${email}, Password: ${password}`);
+    // console.log(`Email: ${email}, Password: ${password}`);
   };
 
   const handleEmailChange = (event) => {
@@ -25,8 +25,6 @@ function App() {
     setPassword(event.target.value);
   };
 
-  console.log('email : ', email);
-  console.log('password : ',password);
 
   return (
     <div className="wrapper fadeInDown">
@@ -48,7 +46,7 @@ function App() {
             onChange={handleEmailChange}
           />
           <input
-            type="text"
+            type="password"
             id="password"
             className="Password fadeIn third"
             name="password"
