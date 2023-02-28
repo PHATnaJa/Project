@@ -50,7 +50,7 @@ function App() {
           <input
             type="text"
             id="password"
-            className="fadeIn third"
+            className="Password fadeIn third"
             name="password"
             placeholder="Password"
             style={{ backgroundImage: `url('/images/password.png')`,backgroundPosition: '95%' }}
