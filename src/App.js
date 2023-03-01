@@ -2,9 +2,12 @@
 import './App.css';
 import { useState } from 'react';
 
-/*bootstrap*/ 
+/*Bootstrap*/ 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
+
+/*Component*/
+import Footer from './components/footer'; 
 
 
 function App() {
@@ -27,7 +30,7 @@ function App() {
 
 
   return (
-    <div className="wrapper fadeInDown">
+    <div className="wrapper fadeInDown" style={{ minHeight: "100vh" }}>
       <div id="formContent">
         {/* Login Form */}
         <div className="fadeIn first ">
@@ -63,19 +66,8 @@ function App() {
           ลืมรหัสผ่าน
         </a>
       </div>
+      <Footer/>
     </div>
   );
 }
-function LoginPage() {
-  return (
-    <>
-      <App/>
-      <footer style={{ backgroundColor: 'rgb(215, 226, 243)'}}>
-        <a style={{ backgroundColor: '#fff' , position: 'absolute', bottom: 0, left: 0, right: 0 }}> 
-          ติดต่อผู้ดูแล : 08x-xxx-xxxx , หรือ Email - CE_SSRU@ssru.ac.th
-        </a>
-      </footer>
-    </>
-  );
-}
-export default LoginPage;
+export default App;
