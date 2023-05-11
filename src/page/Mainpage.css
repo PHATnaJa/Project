@@ -33,10 +33,15 @@
   .menu-item {
     padding: 10px;
     cursor: pointer;
+    font-family: 'Alata', sans-serif;
+  }
+  .menu-item:hover {
+    color: rgb(255, 255, 255);
+    background-color: #b6e2ff;
   }
   
   .menu-item.active {
-    background-color: #ddd;
+    background-color: #85CDFD;
   }
   
   /* Content styles */
@@ -60,4 +65,29 @@
     align-items: center;
     justify-content: center;
   }
+  .card {
+    background: var(--surface-card);
+    padding: 2rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+}
+html {
+  font-size: 14px;
+}
+
+body {
+  font-family: var(--font-family);
+  font-weight: normal;
+  background: var(--surface-ground);
+  color: var(--text-color);
+  padding: 1rem;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.หน้าแรก {
+  background: var(--surface-card);
+  padding: 2rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
   

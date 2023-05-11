@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
+import { Accordion, AccordionTab } from 'primereact/accordion';
+import { Fieldset } from 'primereact/fieldset';
 import './Mainpage.css';
+
 
 import Header from '../components/Header';
 
@@ -60,11 +63,48 @@ function Mainpage() {
       </div>
 
       <div className="content">
-        <h1>{activeMenuItem}</h1>
+      {activeMenuItem === 'หน้าแรก' && (
+  <div>
+    <h1>{activeMenuItem}</h1>
+    <p>เนื้อหาของหน้าแรก </p>
+    {/* <Accordion>
+      <AccordionTab header="ตัวอย่างเนื้อหา 1">
+        <p>เนื้อหาตัวอย่าง 1</p>
+      </AccordionTab>
+    </Accordion> */}
+  </div>
+)}
+      {activeMenuItem === 'ข้อมูล' && (
+        <div>
+          <h1>{activeMenuItem}</h1>
+          <p>เนื้อหาของข้อมูล</p>
+          <img src="/images/ce.png" alt="รูปภาพ" className="image" />
+        </div>
+      )}
+      {activeMenuItem === 'กิจกรรม' && (
+        <div>
+          <h1>{activeMenuItem}</h1>
+          <p>เนื้อหาของกิจกรรม</p>
+        </div>
+      )}
+      {activeMenuItem === 'คะแนนพิเศษ' && (
+        <div>
+          <h1>{activeMenuItem}</h1>
+          <p>เนื้อหาของคะแนนพิเศษ</p>
+        </div>
+      )}
+      {activeMenuItem === 'แบบประเมิน' && (
+        <div>
+          <h1>{activeMenuItem}</h1>
+          <p>เนื้อหาของแบบประเมิน</p>
+        </div>
+      )}
       </div>
-
+    
       <div className="expand-button" onClick={handleSidebarToggle}>&#9776;</div>
     </div>
+    
+    
   );
 }
 
