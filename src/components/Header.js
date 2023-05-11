@@ -1,23 +1,19 @@
 import React from 'react';
 import './Header.css';
 
-function Navbar() {
+function Header() {
   return (
-    <nav className="navbar">
-      <div className="logo"></div>
-      <ul className="nav-menu">
-        <li className="nav-item">หน้าแรก</li>
-        <li className="nav-item">ข้อมูล</li>
-        <li className="nav-item">กิจกรรม</li>
-        <li className="nav-item">คะแนนพิเศษ</li>
-        <li className="nav-item">แบบประเมิน</li>
-      </ul>
+    <header className="header">
+      <h1 className="logo"></h1>
       <div className="profile">
-        <span className="profile-name">Taksin Kumseeya</span>
-        <button className="logout-button">ออกจากระบบ</button>
+        {/* <img className="profile-picture" src="/path_to_profile_picture" alt="โปรไฟล์" /> */}
+        <div className="profile-info">
+          <span className="profile-name">Taksin Kumseeya</span>
+          <span className="logout-text">ออกจากระบบ</span>
+        </div>
       </div>
-    </nav>
+    </header>
   );
 }
 
-export default Navbar;
+export default Header;
