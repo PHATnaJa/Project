@@ -1,15 +1,27 @@
-import React, { useState } from 'react';
-import { Accordion, AccordionTab } from 'primereact/accordion';
-import { Fieldset } from 'primereact/fieldset';
+// import { Accordion, AccordionTab } from 'primereact/accordion';
+// import { Fieldset } from 'primereact/fieldset';
 import './Mainpage.css';
 
-
 import Header from '../components/Header';
+import React, { useState, useEffect } from 'react';
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
+import { ProductService } from '../service/ProductService';
+
+
+
+
+
+
 
 function Mainpage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeMenuItem, setActiveMenuItem] = useState('หน้าแรก');
-  
+  const [products, setProducts] = useState([]);
+
+    useEffect(() => {
+        ProductService.getProductsMini().then(data => setProducts(data));
+    }, []);
 
   const handleSidebarToggle = () => {
     setSidebarOpen(!sidebarOpen);
@@ -67,11 +79,14 @@ function Mainpage() {
   <div>
     <h1>{activeMenuItem}</h1>
     <p>เนื้อหาของหน้าแรก </p>
-    {/* <Accordion>
-      <AccordionTab header="ตัวอย่างเนื้อหา 1">
-        <p>เนื้อหาตัวอย่าง 1</p>
-      </AccordionTab>
-    </Accordion> */}
+        <div className="card">
+            <DataTable value={products} paginator rows={2} tableStyle={{ minWidth: '40rem' }}>
+                <Column field="code" header="Code"></Column>
+                <Column field="name" header="Name"></Column>
+                <Column field="category" header="Category"></Column>
+                <Column field="quantity" header="Quantity"></Column>
+            </DataTable>
+        </div>
   </div>
 )}
       {activeMenuItem === 'ข้อมูล' && (
