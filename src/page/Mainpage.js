@@ -1,18 +1,16 @@
 // import { Accordion, AccordionTab } from 'primereact/accordion';
 // import { Fieldset } from 'primereact/fieldset';
 import './Mainpage.css';
+import 'primereact/resources/themes/lara-light-indigo/theme.css';   // theme
+import 'primereact/resources/primereact.css';                       // css
+import 'primeicons/primeicons.css';                                 // icons
+import 'primeflex/primeflex.css';
 
 import Header from '../components/Header';
 import React, { useState, useEffect } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { ProductService } from '../service/ProductService';
-
-
-
-
-
-
 
 function Mainpage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);

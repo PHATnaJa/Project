@@ -8,35 +8,83 @@ import 'bootstrap/dist/js/bootstrap.min.js';
 // /*Component*/
 import Footer from '../components/Footer'; 
 
-
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
 
 import { Link, Route, Routes,useNavigate } from "react-router-dom";
 import React, {useState} from 'react';
 import Axios from "axios";
-import { Alert } from 'react-bootstrap';
-
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+import { Dialog } from 'primereact/dialog';
 
 function Login() {
-    const navigate = useNavigate()
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-  
-    const handleSubmit = (event) => {
-      event.preventDefault();
-      Axios.post("http://localhost:3001/project",{
+  const MySwal = withReactContent(Swal);
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [visible, setVisible] = useState(false);
+
+  const showDialog = () => {
+    setVisible(true);
+  }
+
+  const hideDialog = () => {
+    setVisible(false);
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    Axios.post("http://localhost:3001/project", {
       email: email,
-      password: password,}).then((response) => {
-        if(response.data.message){
-          alert(response.data.message);
-        }
-        else{
-         alert('login ผ่าน');
+      password: password,
+    }).then((response) => {
+      if (response.data.message) {
+        MySwal.fire({
+          title: <strong>อีเมลหรือรหัสผ่านไม่ถูกต้อง!</strong>,
+          icon: 'error',
+          timer: 2000
+        })
+      }
+      else {
+        MySwal.fire({
+          title: <strong>ล็อคอินสำเร็จ!</strong>,
+          icon: 'success',
+          timer: 2000
+        }).then((response) => {
           navigate('/');
-        }
-          });
-            };
+        });
+      }
+    });
+  };
+
+  const handleEmailChange = (event) => {
+    setEmail(event.target.value);
+  };
+
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
+  };
+
+// function Login() {
+//     const navigate = useNavigate()
+//     const [email, setEmail] = useState("");
+//     const [password, setPassword] = useState("");
+  
+//     const handleSubmit = (event) => {
+//       event.preventDefault();
+//       Axios.post("http://localhost:3000/project",{
+//       email: email,
+//       password: password,}).then((response) => {
+//         if(response.data.message){
+//           alert(response.data.message);
+//         }
+//         else{
+//          alert('login ผ่าน');
+//           navigate('/');
+//         }
+//           });
+//             };
     // const handleSubmit = (event) => {
     //   event.preventDefault();
     //   history.push('/mainpage');
@@ -60,14 +108,13 @@ function Login() {
   //   }
   // };
   
-    const handleEmailChange = (event) => {
-      setEmail(event.target.value);
-    };
+    // const handleEmailChange = (event) => {
+    //   setEmail(event.target.value);
+    // };
   
-    const handlePasswordChange = (event) => {
-      setPassword(event.target.value);
-    };
-  
+    // const handlePasswordChange = (event) => {
+    //   setPassword(event.target.value);
+    // };
   
     return (
       <div className="wrapper fadeInDown" style={{ minHeight: "100vh" }}>
@@ -98,7 +145,7 @@ function Login() {
               value={password}
               onChange={handlePasswordChange}
             />
-            <input type="submit" className="fadeIn fourth" value="เข้าสู่ระบบ" />
+            <Link to = "/mainpage"><input type="submit" className="fadeIn fourth" value="เข้าสู่ระบบ" /></Link>
           </form>
         </div>
         <div className="forgetpass">
@@ -106,6 +153,7 @@ function Login() {
             ลืมรหัสผ่าน
           </a>
         </div>
+        
         <Footer/>
       </div>
     );
