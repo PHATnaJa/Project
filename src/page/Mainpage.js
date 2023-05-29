@@ -5,17 +5,25 @@ import 'primereact/resources/themes/lara-light-indigo/theme.css';   // theme
 import 'primereact/resources/primereact.css';                       // css
 import 'primeicons/primeicons.css';                                 // icons
 import 'primeflex/primeflex.css';
-
+// import 
+import Activity from './Activity'
 import Header from '../components/Header';
 import React, { useState, useEffect } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { ProductService } from '../service/ProductService';
+import { Button } from 'primereact/button';
+import { Dialog } from 'primereact/dialog';
 
 function Mainpage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeMenuItem, setActiveMenuItem] = useState('หน้าแรก');
   const [products, setProducts] = useState([]);
+  const [visible, setVisible] = useState(false);
+
+  const actionTemplate = () => (
+    <Button label="ประเมิน" onClick={() => setVisible(true)} />
+  );
 
     useEffect(() => {
         ProductService.getProductsMini().then(data => setProducts(data));
@@ -76,13 +84,15 @@ function Mainpage() {
       {activeMenuItem === 'หน้าแรก' && (
   <div>
     <h1>{activeMenuItem}</h1>
-    <p>เนื้อหาของหน้าแรก </p>
+
         <div className="card">
-            <DataTable value={products} paginator rows={2} tableStyle={{ minWidth: '40rem' }}>
-                <Column field="code" header="Code"></Column>
-                <Column field="name" header="Name"></Column>
-                <Column field="category" header="Category"></Column>
-                <Column field="quantity" header="Quantity"></Column>
+            <DataTable value={products} paginator rows={10} tableStyle={{ minWidth: '40rem' }}>
+                <Column field="code" header="ลำดับ"></Column>
+                <Column field="headlines" header="หัวข้อข่าว"></Column>
+                <Column field="name" header="สร้างโดย"></Column>
+                <Column field="quantity" header="สร้างขึ้นเมื่อวันที่"></Column>
+                <Column field="visit" header="การเข้าชม"></Column>
+                <Column field="reply" header="การตอบกลับ"></Column>
             </DataTable>
         </div>
   </div>
@@ -90,14 +100,24 @@ function Mainpage() {
       {activeMenuItem === 'ข้อมูล' && (
         <div>
           <h1>{activeMenuItem}</h1>
-          <p>เนื้อหาของข้อมูล</p>
-          <img src="/images/ce.png" alt="รูปภาพ" className="image" />
+          <div className='data'> 
+            <h3>ชื่อ-นามสกุล</h3>
+            <h3>รหัสนักศึกษา</h3>
+            <h3>รหัสบัตรประชาชน</h3>
+            <h3>คณะ</h3>
+            <h3>สาขา</h3>
+            <h3>รุ่นปีการศึกษา</h3>
+            <h3>เพศ</h3>
+            <h3>วันเกิด</h3>
+            <h3>เบอร์โทรศัพท์</h3>
+          </div>
         </div>
       )}
       {activeMenuItem === 'กิจกรรม' && (
         <div>
           <h1>{activeMenuItem}</h1>
-          <p>เนื้อหาของกิจกรรม</p>
+          <h3>เลือกดูผลงานปีการศึกษา</h3>
+          <Activity/>
         </div>
       )}
       {activeMenuItem === 'คะแนนพิเศษ' && (
@@ -109,7 +129,23 @@ function Mainpage() {
       {activeMenuItem === 'แบบประเมิน' && (
         <div>
           <h1>{activeMenuItem}</h1>
-          <p>เนื้อหาของแบบประเมิน</p>
+
+          <div className="card">
+            <DataTable value={products} paginator rows={10} tableStyle={{ minWidth: '40rem' }}>
+                <Column field="code" header="ปีการศึกษา"></Column>
+                <Column field="headlines" header="ภาคการศึกษา"></Column>
+                <Column field="name" header="รหัสวิชา"></Column>
+                <Column field="quantity" header="ชื่อ"></Column>
+                <Column field="visit" header="อาจารย์"></Column>
+                <Column field="reply" header="ดำเนินงาน" body={actionTemplate}></Column>
+            </DataTable>
+
+            <Dialog header="Header" visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)}>
+        <p className="m-0">
+          {/* เนื้อหาใน Dialog */}
+        </p>
+      </Dialog>
+        </div>
         </div>
       )}
       </div>
