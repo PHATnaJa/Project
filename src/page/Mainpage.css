@@ -96,3 +96,6 @@ body {
     border-radius: 10px;
     margin-bottom: 1rem;
 }
+.dialog-container .ui-dialog-title {
+  margin-bottom: 1rem;
+}

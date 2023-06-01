@@ -8,22 +8,51 @@ import 'primeflex/primeflex.css';
 // import 
 import Activity from './Activity'
 import Header from '../components/Header';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef  } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { ProductService } from '../service/ProductService';
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
+import { AssessmentService } from '../service/AssessmentService';
+import { Checkbox } from "primereact/checkbox";
+import { Toast } from 'primereact/toast';
 
 function Mainpage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeMenuItem, setActiveMenuItem] = useState('หน้าแรก');
   const [products, setProducts] = useState([]);
+  const [Assessment, setAssessment] = useState([]);
   const [visible, setVisible] = useState(false);
-
+  const toast = useRef(null);
+  
+  const showSuccess = () => {
+    toast.current.show({severity:'success', summary: 'Success', detail:'Message Content', life: 3000});
+}
   const actionTemplate = () => (
     <Button label="ประเมิน" onClick={() => setVisible(true)} />
   );
+  const actionTemplate1 = (rowData, fieldName) => (
+    <Checkbox
+      onChange={() => handleCheckboxChange(rowData, fieldName)}
+      checked={rowData[fieldName]}
+    />
+  );
+  const handleCheckboxChange = (rowData, fieldName) => {
+    const updatedData = Assessment.map((item) => {
+      const updatedItem = { ...item };
+      if (item === rowData) {
+        updatedItem[fieldName] = !updatedItem[fieldName]; // สลับค่าฟิลด์ที่ต้องการติ๊ก
+      } else {
+        updatedItem[fieldName] = false; // ยกเลิกติ๊กฟิลด์ในแถวนั้นทั้งหมด
+      }
+      return updatedItem;
+    });
+    setAssessment(updatedData);
+  };
+    useEffect(() => {
+      AssessmentService.getAssessmentMini().then(data => setAssessment(data));
+    }, []);
 
     useEffect(() => {
         ProductService.getProductsMini().then(data => setProducts(data));
@@ -36,7 +65,6 @@ function Mainpage() {
   const handleMenuItemClick = (menuItem) => {
     setActiveMenuItem(menuItem);
   };
-
   return (
     <div>
       <Header/>
@@ -139,22 +167,31 @@ function Mainpage() {
                 <Column field="visit" header="อาจารย์"></Column>
                 <Column field="reply" header="ดำเนินงาน" body={actionTemplate}></Column>
             </DataTable>
-
-            <Dialog header="Header" visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)}>
-        <p className="m-0">
-          {/* เนื้อหาใน Dialog */}
-        </p>
+            <Dialog  header="ประเมินการเรียนการสอน มหาวิทยาลัยราชภัฎสวนสุนันทา ปีการศึกษา : 2566 ภาคการศึกษา 1 " visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)}> 
+        <div>
+        <DataTable value={Assessment} showGridlines tableStyle={{ minWidth: '50rem' }}>
+                <Column field="clause" header="ข้อ"></Column>
+                <Column field="list" header="รายการประเมิน"></Column>
+                <Column field="very good" header="ดีมาก" body={(rowData) => actionTemplate1(rowData, 'very good')}></Column>
+                <Column field="good" header="ดี" body={(rowData) => actionTemplate1(rowData, 'good')}></Column>
+                <Column field="moderate" header="ปานกลาง" body={(rowData) => actionTemplate1(rowData, 'moderate')}></Column>
+                <Column field="fair" header="พอใช้" body={(rowData) => actionTemplate1(rowData, 'fair')}></Column>
+                <Column field="amend" header="ปรับปรุง" body={(rowData) => actionTemplate1(rowData, 'amend')}></Column>
+        </DataTable>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '20px' }}>
+                   <Toast ref={toast} />
+            <div className="flex flex-wrap gap-2">
+                <Button label="บันทึก" className="p-button-success" onClick={showSuccess} />
+            </div>
+        </div>
       </Dialog>
         </div>
         </div>
       )}
       </div>
-    
       <div className="expand-button" onClick={handleSidebarToggle}>&#9776;</div>
     </div>
-    
-    
   );
 }
-
 export default Mainpage;
