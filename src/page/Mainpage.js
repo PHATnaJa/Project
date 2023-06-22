@@ -11,27 +11,78 @@ import Header from '../components/Header';
 import React, { useState, useEffect, useRef  } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import { ProductService } from '../service/ProductService';
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
+import { ProductService } from '../service/ProductService';
 import { AssessmentService } from '../service/AssessmentService';
+import { ExtrapointsService } from '../service/ExtrapointsService';
 import { Checkbox } from "primereact/checkbox";
 import { Toast } from 'primereact/toast';
+import { FileUpload } from 'primereact/fileupload';
 
 function Mainpage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeMenuItem, setActiveMenuItem] = useState('หน้าแรก');
   const [products, setProducts] = useState([]);
+  const [Extrapoints, setExtrapoints] = useState([]);
   const [Assessment, setAssessment] = useState([]);
+  const [selectedExtrapoints, setSelectedExtrapoints] = useState(null);
+  const [rowClick, setRowClick] = useState(true);
+  const [open, setOpen] = React.useState(false);
   const [visible, setVisible] = useState(false);
   const toast = useRef(null);
   
-  const showSuccess = () => {
-    toast.current.show({severity:'success', summary: 'Success', detail:'Message Content', life: 3000});
-}
+  //ฟังก์ในส่วนของการปิดหน้าต่าง
+  const handleClose = () => {
+    setOpen(false);
+  };
+  //////////////////////////////////////////////////////////////////////////////////    การโชว์เมื่อกดบันทึกสำเร็จ    //////////////////////////////////////////////////////////////////////////
+  const ShowToastSuccess = () => {
+    toast.current.show({
+      severity: 'success',
+      summary: 'บันทึกข้อมูลเสร็จสิ้น',
+      life: 3000,
+      style: {
+        fontFamily: 'Kanit',
+        fontSize: '16px'
+      }
+    });
+    handleClose();
+    setVisible(false);
+  };
+
+  /////////////////////////////////////////////////////////////////////////////    ส่วนของการ Upload รูปภาพของ คะแนนพิเศษ     //////////////////////////////////////////////////////////////////////
+  const uploadImage = (event, rowData) => {
+    const file = event.files[0]; // เลือกไฟล์รูปภาพแรกที่อัปโหลด
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      // ตัวอย่างการดำเนินการอัปโหลดรูปภาพที่นี่
+      console.log('Uploading image for row:', rowData);
+      console.log('Image data:', e.target.result);
+    };
+
+    reader.readAsDataURL(file);
+  };
+
+  const imageUploadTemplate = (rowData) => {
+    return (
+      <div>
+        {rowData.pictrue ? (
+          <img src={rowData.pictrue} alt="รูปภาพ" style={{ width: '100px' }} />
+        ) : (
+          <FileUpload mode="basic" chooseLabel="เลือกรูปภาพ" className="p-button-rounded p-button-outlined p-button-secondary" customUpload={true} uploadHandler={(e) => uploadImage(e, rowData)} />
+        )}
+      </div>
+    );
+  };
+  
+  //////////////////////////////////////////////////////////////////////////////   ปุ่ม ประเมิน    ///////////////////////////////////////////////////////////////////////////// 
   const actionTemplate = () => (
     <Button label="ประเมิน" onClick={() => setVisible(true)} />
   );
+
+  /////////////////////////////////////////////////////////////////////////////   กล่องติ๊กถูก     //////////////////////////////////////////////////////////////////////////////
   const actionTemplate1 = (rowData, fieldName) => (
     <Checkbox
       onChange={() => handleCheckboxChange(rowData, fieldName)}
@@ -43,13 +94,19 @@ function Mainpage() {
       const updatedItem = { ...item };
       if (item === rowData) {
         updatedItem[fieldName] = !updatedItem[fieldName]; // สลับค่าฟิลด์ที่ต้องการติ๊ก
-      } else {
+      } else if (updatedItem[fieldName]) {
         updatedItem[fieldName] = false; // ยกเลิกติ๊กฟิลด์ในแถวนั้นทั้งหมด
       }
       return updatedItem;
     });
+  
     setAssessment(updatedData);
   };
+  
+    useEffect(() => {
+      ExtrapointsService.getExtrapoints().then(data => setExtrapoints(data));
+    }, []);
+    
     useEffect(() => {
       AssessmentService.getAssessmentMini().then(data => setAssessment(data));
     }, []);
@@ -152,6 +209,18 @@ function Mainpage() {
         <div>
           <h1>{activeMenuItem}</h1>
           <p>เนื้อหาของคะแนนพิเศษ</p>
+          <div className="card">
+            <DataTable value={Extrapoints} selectionMode={rowClick ? null : 'checkbox'} selection={selectedExtrapoints} onSelectionChange={(e) => setSelectedExtrapoints(e.value)} dataKey="id" tableStyle={{ minWidth: '50rem' }}>
+                <Column field="clause" header="ข้อ"></Column>
+                <Column field="list" header="ชื่อแบบประเมิน"></Column>
+                <Column field="points" header="คะแนน"></Column>
+                <Column field="pictrue" header="รูปภาพ" body={imageUploadTemplate} ></Column>
+                <Column selectionMode="multiple" headerStyle={{ width: '3rem' }}></Column>
+            </DataTable>
+            <div style={{ marginTop: '10px', display: 'flex', justifyContent: 'flex-end' }}>              
+            <Button type="submit" label="ส่งแบบประเมิน" className="w-full md:w-14rem" />
+            </div>
+        </div>
         </div>
       )}
       {activeMenuItem === 'แบบประเมิน' && (
@@ -182,7 +251,10 @@ function Mainpage() {
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '20px' }}>
                    <Toast ref={toast} />
             <div className="flex flex-wrap gap-2">
-                <Button label="บันทึก" className="p-button-success" onClick={showSuccess} />
+                <Button label="บันทึก" className="p-button-success" onClick={()=>{
+             handleClose();
+             ShowToastSuccess();
+            }} />
             </div>
         </div>
       </Dialog>
