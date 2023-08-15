@@ -26,7 +26,7 @@ function Mainpage() {
   const [products, setProducts] = useState([]);
   const [Extrapoints, setExtrapoints] = useState([]);
   const [Assessment, setAssessment] = useState([]);
-  const [selectedExtrapoints, setSelectedExtrapoints] = useState(null);
+  const [selectedExtrapoints, setSelectedExtrapoints] = useState([]);
   const [rowClick, setRowClick] = useState(true);
   const [open, setOpen] = React.useState(false);
   const [visible, setVisible] = useState(false);
@@ -52,30 +52,51 @@ function Mainpage() {
   };
 
   /////////////////////////////////////////////////////////////////////////////    ส่วนของการ Upload รูปภาพของ คะแนนพิเศษ     //////////////////////////////////////////////////////////////////////
-  const uploadImage = (event, rowData) => {
-    const file = event.files[0]; // เลือกไฟล์รูปภาพแรกที่อัปโหลด
-    const reader = new FileReader();
+  const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB in bytes
 
-    reader.onload = (e) => {
-      // ตัวอย่างการดำเนินการอัปโหลดรูปภาพที่นี่
-      console.log('Uploading image for row:', rowData);
-      console.log('Image data:', e.target.result);
-    };
+const isImageFileValid = (file) => {
+  const allowedTypes = ['image/jpeg', 'image/png'];
+  return allowedTypes.includes(file.type) && file.size <= MAX_FILE_SIZE;
+};
 
-    reader.readAsDataURL(file);
+const uploadImage = (event, rowData) => {
+  const file = event.files[0];
+  
+  if (!file || !isImageFileValid(file)) {
+    console.log('Invalid file. Please upload a valid image file (jpg or png) not exceeding 10 MB.');
+    return;
+  }
+
+  const reader = new FileReader();
+
+  reader.onload = (e) => {
+    console.log('Uploading image for row:', rowData);
+    console.log('Image data:', e.target.result);
   };
 
-  const imageUploadTemplate = (rowData) => {
-    return (
-      <div>
-        {rowData.pictrue ? (
-          <img src={rowData.pictrue} alt="รูปภาพ" style={{ width: '100px' }} />
-        ) : (
-          <FileUpload mode="basic" chooseLabel="เลือกรูปภาพ" className="p-button-rounded p-button-outlined p-button-secondary" customUpload={true} uploadHandler={(e) => uploadImage(e, rowData)} />
-        )}
-      </div>
-    );
-  };
+  reader.readAsDataURL(file);
+};
+
+const imageUploadTemplate = (rowData) => {
+  return (
+    <div>
+      {rowData.picture ? (
+        <img src={rowData.picture} alt="รูปภาพ" style={{ width: '100px' }} />
+      ) : (
+        <FileUpload
+          mode="basic"
+          chooseLabel="เลือกรูปภาพ"
+          className="p-button-rounded p-button-outlined p-button-secondary"
+          customUpload={true}
+          uploadHandler={(e) => uploadImage(e, rowData)}
+          accept="image/jpeg, image/png"
+          maxFileSize={MAX_FILE_SIZE}
+        />
+      )}
+    </div>
+  );
+};
+
   
   //////////////////////////////////////////////////////////////////////////////   ปุ่ม ประเมิน    ///////////////////////////////////////////////////////////////////////////// 
   const actionTemplate = () => (
@@ -210,7 +231,7 @@ function Mainpage() {
           <h1>{activeMenuItem}</h1>
           <p>เนื้อหาของคะแนนพิเศษ</p>
           <div className="card">
-            <DataTable value={Extrapoints} selectionMode={rowClick ? null : 'checkbox'} selection={selectedExtrapoints} onSelectionChange={(e) => setSelectedExtrapoints(e.value)} dataKey="id" tableStyle={{ minWidth: '50rem' }}>
+            <DataTable value={Extrapoints} selectionMode="single" selection={selectedExtrapoints} onSelectionChange={(e) => setSelectedExtrapoints(e.value)} dataKey="id" tableStyle={{ minWidth: '50rem' }}>
                 <Column field="clause" header="ข้อ"></Column>
                 <Column field="list" header="ชื่อแบบประเมิน"></Column>
                 <Column field="points" header="คะแนน"></Column>

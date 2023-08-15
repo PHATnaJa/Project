@@ -7,6 +7,7 @@ import 'bootstrap/dist/js/bootstrap.min.js';
 
 import Login from './page/Login';
 import Mainpage from './page/Mainpage';
+import Mainpage2 from './page/Mainpage2';
 import Profile from './page/Profile';
 
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
@@ -22,6 +23,7 @@ function App() {
     <Routes>
       <Route path="/" element={<Login />} />
       <Route path="/mainpage" element={<Mainpage />} />
+      <Route path="/mainpage2" element={<Mainpage2 />} />
       <Route path="/profile" element={<Profile />} />
     </Routes>
   </BrowserRouter>

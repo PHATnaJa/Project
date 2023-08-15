@@ -1,0 +1,101 @@
+/* Sidebar styles */
+.sidebar {
+    width: 250px;
+    background-color: #f2f2f2;
+    position: fixed;
+    left: -250px;
+    top: 0;
+    bottom: 0;
+    transition: left 0.3s;
+  }
+  
+  .sidebar.open {
+    left: 0;
+  }
+  
+  .logo {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .logo img {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 10px;
+  }
+  
+  .menu {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .menu-item {
+    padding: 10px;
+    cursor: pointer;
+    font-family: 'Alata', sans-serif;
+  }
+  .menu-item:hover {
+    color: rgb(255, 255, 255);
+    background-color: #b6e2ff;
+  }
+  
+  .menu-item.active {
+    background-color: #85CDFD;
+  }
+  
+  /* Content styles */
+  .content {
+    margin-left: 250px;
+    padding: 20px;
+  }
+  
+  /* Expand button styles */
+  .expand-button {
+    position: fixed;
+    left: 10px;
+    top: 10px;
+    cursor: pointer;
+  }
+  .small-heading {
+    font-size: 5px;
+  }
+  .center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .card {
+    background: var(--surface-card);
+    padding: 2rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+}
+html {
+  font-size: 14px;
+}
+
+body {
+    font-family: var(--font-family);
+    font-weight: normal;
+    background: var(--surface-ground);
+    color: var(--text-color);
+    padding: 1rem;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.หน้าแรก {
+  background: var(--surface-card);
+  padding: 2rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+.card {
+    background: var(--surface-card);
+    padding: 2rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+}
+.dialog-container .ui-dialog-title {
+  margin-bottom: 1rem;
+}

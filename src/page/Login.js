@@ -11,33 +11,25 @@ import Footer from '../components/Footer';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
 
-import { Link, Route, Routes,useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import React, {useState} from 'react';
 import Axios from "axios";
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
-import { Dialog } from 'primereact/dialog';
 
 function Login() {
   const MySwal = withReactContent(Swal);
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [visible, setVisible] = useState(false);
-
-  const showDialog = () => {
-    setVisible(true);
-  }
-
-  const hideDialog = () => {
-    setVisible(false);
-  }
+  const [status, setStatus] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    Axios.post("http://localhost:3001/project", {
+    Axios.post("http://localhost:3001/test", {
       email: email,
       password: password,
+      status : status,
     }).then((response) => {
       if (response.data.message) {
         MySwal.fire({
@@ -45,6 +37,7 @@ function Login() {
           icon: 'error',
           timer: 2000
         })
+        return email;
       }
       else {
         MySwal.fire({
@@ -52,7 +45,7 @@ function Login() {
           icon: 'success',
           timer: 2000
         }).then((response) => {
-          navigate('/');
+          navigate('/Mainpage');
         });
       }
     });
@@ -145,7 +138,7 @@ function Login() {
               value={password}
               onChange={handlePasswordChange}
             />
-            <Link to = "/mainpage"><input type="submit" className="fadeIn fourth" value="เข้าสู่ระบบ" /></Link>
+            <input type="submit" className="fadeIn fourth" value="เข้าสู่ระบบ" />
           </form>
         </div>
         <div className="forgetpass">
