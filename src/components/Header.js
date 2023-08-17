@@ -1,21 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Header.css';
-import { Link } from "react-router-dom";
-
 
 function Header() {
+  const [userEmail, setUserEmail] = useState(""); 
+  
   return (
     <header className="header">
-      <h1 className="logo"></h1>
-      <div className="profile">
-        {/* <img className="profile-picture" src="/path_to_profile_picture" alt="โปรไฟล์" /> */}
-        <div className="profile-info">
-          <span className="profile-name">Taksin Kumseeya</span>
-          <span className="logout-text">ออกจากระบบ</span>
+      <div className="profile-info">
+        <div className="profile-name">
+          {userEmail && <p>ยินดีต้อนรับ, {userEmail}</p>}
+          <p>Hello world !! สวัสดีชาวโลก</p>
         </div>
       </div>
     </header>
   );
 }
-
 export default Header;

@@ -6,6 +6,7 @@ import 'primereact/resources/primereact.css';                       // css
 import 'primeicons/primeicons.css';                                 // icons
 import 'primeflex/primeflex.css';
 // import 
+import myImage1 from './myImage1.png';
 import Activity from './Activity'
 import Header from '../components/Header';
 import React, { useState, useEffect, useRef  } from 'react';
@@ -149,7 +150,7 @@ const imageUploadTemplate = (rowData) => {
       <div className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="logo">
           {/* <img src="path_to_your_logo_image" alt="Logo" /> */}
-          <img src="/images/ce.png" alt="รูปภาพ" className="image" />
+          <img src={myImage1} alt="รูปภาพ" className="image" />
           <h2 className="small-heading">Thai Qualifications Framework for Engineering Programs and volunteer/public relations score system: case study Computer Engineering Program</h2>
         </div>
         <ul className="menu">

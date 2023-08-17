@@ -4,17 +4,21 @@
   align-items: center;
   height: 60px;
   padding: 0 20px;
-  background-color: #f2f2f2;
+  background-color: #ffffff;
 }
 
-.profile {
+.profile-info {
   display: flex;
-  align-items: center;
+  align-items: right;
+  margin-left: 85%;
 }
 
 .profile-name {
-  margin-right: 8px;
+  font-size: 18px;
+  text-align: right; 
+  color: #ff0000;
 }
+
 
 .logout-button {
   font-size: 12px;

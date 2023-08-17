@@ -6,12 +6,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
 
 // /*Component*/
-import Footer from '../components/Footer'; 
-
+import myImage1 from './myImage1.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
-
+//npm install react-icons
+import { FaUserAlt } from 'react-icons/fa';
+import { FaLock } from 'react-icons/fa';
 import { useNavigate } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import React, {useState} from 'react';
 import Axios from "axios";
 import Swal from 'sweetalert2'
@@ -23,6 +25,7 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [status, setStatus] = useState("");
+  const [userEmail, setUserEmail] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -47,6 +50,8 @@ function Login() {
         }).then((response) => {
           navigate('/Mainpage');
         });
+        setUserEmail(email);
+        navigate('/Mainpage');
       }
     });
   };
@@ -110,45 +115,46 @@ function Login() {
     // };
   
     return (
-      <div className="wrapper fadeInDown" style={{ minHeight: "100vh" }}>
-        <div id="formContent">
-          {/* Login Form */}
-          <div className="fadeIn first ">
-            <img src="/images/ce.png" alt="รูปภาพ" className="image" />
-            <h5>ล็อคอิน</h5>
-          </div>
-          <form onSubmit={handleSubmit}>
-            <input
-              type="text"
-              id="login"
-              className="fadeIn second"
-              name="login"
-              placeholder="E-mail"
-              style={{ backgroundImage: `url('/images/user.png')`,backgroundPosition: '95%'  }}
-              value={email}
-              onChange={handleEmailChange}
-            />
-            <input
-              type="password"
-              id="password"
-              className="Password fadeIn third"
-              name="password"
-              placeholder="Password"
-              style={{ backgroundImage: `url('/images/password.png')`,backgroundPosition: '95%' }}
-              value={password}
-              onChange={handlePasswordChange}
-            />
-            <input type="submit" className="fadeIn fourth" value="เข้าสู่ระบบ" />
-          </form>
+      <div className="wrapper fadeInDown">
+      <div id="formContent">
+        {/* Login Form */}
+        <div className="fadeIn first ">
+          <img src={myImage1} alt="รูปภาพ" className="image" />
+          <h5>ล็อคอิน</h5>
         </div>
-        <div className="forgetpass">
-          <a className="underlineHover" href="#">
-            ลืมรหัสผ่าน
-          </a>
-        </div>
-        
-        <Footer/>
+        <form onSubmit={handleSubmit}>
+          <FaUserAlt className="fadeIn second" /><input
+            type="text" required
+            id="login"
+            className="fadeIn second"
+            name="login"
+            placeholder="E-mail"
+            value={email}
+            onChange={handleEmailChange}
+          />
+          <br />
+          <FaLock className="fadeIn third" /><input
+            type="password" required
+            id="password"
+            className="password fadeIn third"
+            name="password"
+            placeholder="Password"
+            value={password}
+            onChange={handlePasswordChange}
+          />
+          <input type="submit" className="fadeIn fourth" value="เข้าสู่ระบบ" />
+        </form>
       </div>
+      <div>
+        <div className="forgetpass">
+          <Link className="underlineHover" >
+            ลืมรหัสผ่าน
+          </Link>
+        </div>
+
+      </div>
+
+    </div>
     );
 }
 
