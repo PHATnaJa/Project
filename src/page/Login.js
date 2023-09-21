@@ -10,6 +10,7 @@ import myImage1 from './myImage1.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
 //npm install react-icons
+
 import { FaUserAlt } from 'react-icons/fa';
 import { FaLock } from 'react-icons/fa';
 import { useNavigate } from "react-router-dom";
