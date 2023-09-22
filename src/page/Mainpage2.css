@@ -99,3 +99,26 @@ body {
 .dialog-container .ui-dialog-title {
   margin-bottom: 1rem;
 }
+.box {
+  background-color: red;
+  padding: 0.5rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+.input-group {
+  margin-bottom: 1rem;
+}
+input[type="text"] {
+  width: 100%; /* ทำให้ช่องใส่ข้อความเต็มความกว้างของคอลัมน์ */
+  padding: 10px; /* เพิ่มขอบของช่อง */
+  border: 1px solid #ccc; /* เพิ่มเส้นขอบ */
+  border-radius: 10px; /* เพิ่มรูปร่างมนตราระหว่างอาการและขอบของช่อง */
+}
+
+/* สไตล์เมื่อช่องใส่ข้อความมีการโฟกัส */
+input[type="text"]:focus {
+  border-color: #007bff; /* เปลี่ยนสีขอบเมื่อช่องมีการโฟกัส */
+}
+span {
+  padding-right: 1rem; /* ห่างจากขวาของ span */
+}
